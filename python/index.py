@@ -38,6 +38,9 @@ class GoogleBrowserSimulator:
         
         if headless:
             self.chrome_options.add_argument('--headless')
+            self.chrome_options.add_argument('--disable-gpu')
+            self.chrome_options.add_argument('--window-size=1920,1080')
+            self.chrome_options.add_argument('--remote-debugging-port=9222')
         
         self.driver = None
 
@@ -257,7 +260,7 @@ def main():
     print("=" * 50)
     
     # 创建浏览器模拟器实例
-    simulator = GoogleBrowserSimulator(headless=False)  # 设置为True可以隐藏浏览器窗口
+    simulator = GoogleBrowserSimulator(headless=True)  # 设置为True隐藏浏览器窗口
     
     try:
         # 启动浏览器
@@ -287,23 +290,55 @@ def main():
         search_results = list(res.values())
 
 
-        print("-"*100)
-        # 显示搜索结果
+        print("="*80)
+        print("搜索结果汇总")
+        print("="*80)
+        
         if search_results:
-            print(f"总共找到 {len(search_results)} 个包含vipCode的链接")
-            try:
-                for result in search_results:
-                    print("-"*100)
-                    print(f"vipCode: {result['vipCode']}")
-                    print(f"URL: {result['url']}")
-            except Exception as e:
-                print(f"获取搜索结果时出错: {e}")
-
-           
+            # 1. 主要关注搜索出多少个vipCode
+            print(f"🎯 总共找到 {len(search_results)} 个的vipCode")
+            print()
             
-           
+            # 2. 展示所有的vipCode
+            print("📋 所有vipCode列表:")
+            print("-" * 40)
+            for i, result in enumerate(search_results, 1):
+                print(f"{i:2d}. {result['vipCode']}")
+            
+            print("-"*80)
+            
+            # 3. 最后展示vipCode和URL的关系
+            print("🔗 vipCode与URL对应关系:")
+            print("="*80)
+            for i, result in enumerate(search_results, 1):
+                print(f"vipCode {i}: {result['vipCode']}")
+                print(f"URL: {result['url']}")
+                if i < len(search_results):
+                    print("-" * 80)
+            
+            print(f"✅ 搜索完成！共获取 {len(search_results)} 个vipCode")
+            
         else:
-            print("未找到包含vipCode的链接")
+            print("❌ 未找到包含vipCode的链接")
+            print("💡 请检查搜索关键词或网络连接")
+        # print("-"*100)
+        # # 显示搜索结果
+        # if search_results:
+        #     print(f"总共找到 {len(search_results)} 个包含vipCode的链接")
+        #     try:
+
+        #         # print all vipCode
+        #         print("所有vipCode:")
+        #         for result in search_results:
+        #             print(result['vipCode'])
+
+        #         print("-"*100)
+        #         for result in search_results:
+        #             print("-"*100)
+        #             print(f"vipCode: {result['vipCode']}")
+        #             print(f"URL: {result['url']}")
+        #     except Exception as e:
+        #         print(f"获取搜索结果时出错: {e}")
         
         # 等待用户查看
         # print("\n搜索完成，按回车键关闭浏览器...")

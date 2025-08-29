@@ -75,9 +75,9 @@ python index.py
 
 ## 无头模式
 
-如需隐藏浏览器窗口，可以修改代码中的：
+脚本默认使用无头模式（headless=True），浏览器在后台运行，不显示UI界面。如需显示浏览器窗口，可以修改代码中的：
 ```python
-simulator = GoogleBrowserSimulator(headless=True)
+simulator = GoogleBrowserSimulator(headless=False)
 ```
 
 ## 注意事项
