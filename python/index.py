@@ -163,13 +163,11 @@ class GoogleBrowserSimulator:
             
             # 爬取多页结果
             for page in range(num_pages):
-                print(f"正在爬取第 {page + 1} 页...")
+                # print(f"正在爬取第 {page + 1} 页...")
                 
                 # 获取当前页搜索结果
                 page_results = self._get_search_results()
                 all_results.extend(page_results)
-                
-                print(f"第 {page + 1} 页找到 {len(page_results)} 个包含weex.com的链接")
                 
                 # 如果不是最后一页，点击下一页
                 if page < num_pages - 1:
@@ -190,7 +188,7 @@ class GoogleBrowserSimulator:
                         print(f"无法找到下一页按钮或点击失败: {e}")
                         break
             
-            print(f"搜索 '{keyword}' 完成，总共找到 {len(all_results)} 个结果")
+            # print(f"搜索 '{keyword}' 完成，总共找到 {len(all_results)} 个结果")
             return all_results
             
         except Exception as e:
@@ -216,7 +214,7 @@ class GoogleBrowserSimulator:
                 href = element.get_attribute('href')
                 # get url params value vipCode
 
-                if href and 'weex.com' in href:
+                if href and 'weex' in href:
                  vipCode = self.get_url_params(href, 'vipCode')
                  if vipCode:
                   results.append({
@@ -289,34 +287,27 @@ def main():
         search_results = list(res.values())
 
 
+        print("-"*100)
         # 显示搜索结果
         if search_results:
+            print(f"总共找到 {len(search_results)} 个包含vipCode的链接")
             try:
                 for result in search_results:
-                    print(result['url'])
-                    print(result['vipCode'])
+                    print("-"*100)
+                    print(f"vipCode: {result['vipCode']}")
+                    print(f"URL: {result['url']}")
             except Exception as e:
                 print(f"获取搜索结果时出错: {e}")
 
-            # print(f"\n总共找到 {len(search_results)} 个包含weex.com的链接:")
-            # print("=" * 80)
-            # for i, result in enumerate(search_results, 1):
-            #     print(f"{i}. URL: {result['url']}")
-            #     print(f"   vipCode: {result['vipCode']}")
-            #     print("-" * 80)
+           
             
-            # # 保存搜索结果
-            # simulator.save_results({
-            #     'search_keyword': 'weex',
-            #     'results': search_results,
-            #     'total_count': len(search_results)
-            # })
+           
         else:
-            print("未找到包含weex.com的链接")
+            print("未找到包含vipCode的链接")
         
         # 等待用户查看
-        print("\n搜索完成，按回车键关闭浏览器...")
-        input()
+        # print("\n搜索完成，按回车键关闭浏览器...")
+        # input()
         
     except KeyboardInterrupt:
         print("\n用户中断操作")
